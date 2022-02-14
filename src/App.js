@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useContext, useEffect, useRef, useState } from "react";
+import "./App.css";
+import MouseText from "./component/MouseText";
+import { MainContext } from "./Context";
 
 function App() {
+  const touch = useRef();
+
+  const [mode, setMode] = useState(false);
+
+  const { handleMove } = useContext(MainContext);
+
+  useEffect(() => {
+    touch.current.focus();
+  }, []);
+
+  const handleKeyUp = (e) => {
+    if (e.key === "c") {
+      setMode(!mode);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      onMouseMove={(e) => handleMove(e)}
+      ref={touch}
+      tabIndex={0}
+      onKeyUp={handleKeyUp}
+      className="screen"
+    >
+      {mode && <p>selam naber</p>}
+      <MouseText />
     </div>
   );
 }
